@@ -1,0 +1,32 @@
+---
+#Tenant variables
+keypair: cloudvt
+security_group: default,Internal-all
+tenant_name: cloudvt-demo1
+user: cloudvt
+#Image variables
+image_name: ubuntu-1404-cloudvt1
+file_name: ubuntu-1404-cloudvt
+#Quota Variables
+instances: 200
+cores: 100
+ram: -1
+floatingips: 20
+securitygroups: 100
+#Host Aggregate
+az: cusps1
+hypervisor1: mhv9.cusps1.pv.metacloud.in
+hypervisor2: mhv10.cusps1.pv.metacloud.in
+hypervisor3: mhv11.cusps1.pv.metacloud.in
+aggregate_name: vtcloudwebagg1
+aggregateID: 50
+flavor_name: vtcloud1.large
+flavor_ram: 2000
+flavor_disk: 80
+flavor_vcpu: 2
+#Cinder Volumes
+volume_name: database1
+volume_size: 100
+
+
+ 

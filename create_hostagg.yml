@@ -1,0 +1,35 @@
+- name: Creating a new Host Aggregate for Web servers
+  connection: local
+  hosts: local
+  gather_facts: false
+  vars_files:
+    - vars/vars.yml
+
+  tasks:
+
+   - name: Set Aggregate Name
+     shell: nova aggregate-create "{{ aggregate_name }}" "{{ az }}"
+
+   - name: Add Host to Aggregate
+     shell: nova aggregate-add-host "{{ aggregate_name }}" "{{ hypervisor1 }}"
+
+   - name: Add Aggregate to Metadata
+     shell: nova aggregate-set-metadata "{{ aggregate_name }}" AGID={{ aggregateID }}
+
+   - name: Create Flavor
+     shell: nova flavor-create "{{ flavor_name }}" auto "{{ flavor_ram }}" "{{ flavor_disk }}" "{{flavor_vcpu}}"
+
+   - name: Add flavor key
+     shell: nova flavor-key "{{ flavor_name }}" set AGID= "{{ aggregateID }}"
+
+
+   - name: display Aggregate
+     shell: nova aggregate-list 
+     register: shell_output2 
+   - debug: msg="{{ shell_output2.stdout }}"
+   
+   - name: display Aggregate FLavor for Web 
+     shell: nova flavor-list | grep {{ flavor_name }} | awk '{ print $2 } '
+     register: shell_output3
+   - debug: msg="{{ shell_output3.stdout }}"
+   - local_action: copy content="{{ shell_output3.stdout }}" dest=/home/ubuntu/03-Ansible/output/flavor.txt 

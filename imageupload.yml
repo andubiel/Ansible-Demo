@@ -1,0 +1,15 @@
+- name: upload Cirros Image cirrosansible
+  connection: local
+  hosts: local
+  gather_facts: false
+  vars_files:
+    - vars/vars.yml
+
+  tasks:
+   - name: uploading image in progress
+     shell: glance image-create --name {{ image_name }}   --is-public true --disk-format raw --container-format bare  --file {{ file_name }}  --progress   
+   - name: list images
+     shell: glance image-list | awk '$4 == "{{ image_name }}" {print $2}'
+     register: shell_output2
+   - debug: msg="{{ shell_output2.stdout }}"
+   - local_action: copy content="{{ shell_output2.stdout }}" dest=/home/ubuntu/03-Ansible/image.txt
